@@ -1,0 +1,24 @@
+# Project: Online Music Store
+
+This project is an online store for musical instruments.
+
+## Tech Stack
+
+- **Framework**: Next.js  
+- **Language**: TypeScript  
+- **Styling**: Tailwind CSS  
+- **UI Components**: Shadcn/ui
+
+All relevant theme variables for Tailwind CSS are defined in the `global.css` file to ensure consistent styling across the application.
+
+The goal of the project is to create a fast, responsive, and accessible e-commerce platform for browsing and purchasing musical instruments.
+
+## Features (Planned/In Progress)
+
+- Responsive product gallery with zoomable images  
+- Category-based navigation  
+- Product filtering and sorting  
+- Cart functionality  
+- Checkout (not yet implemented)  
+- Admin dashboard (planned)
+

@@ -1,23 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useState } from "react";
+import { useCatalogStore } from "@/store/catalogStore";
 
 const allCategories = ["All", "String", "Keyboard", "Wind", "Percussion", "Drums", "Synth", "Bass"];
 
 export const CategoryTabs = () => {
-    const [active, setActive] = useState("All");
-    const [showAll, setShowAll] = useState(false);
+    const active = useCatalogStore((s) => s.activeCategory);
+    const setActive = useCatalogStore((s) => s.setActiveCategory);
+    const showAll = useCatalogStore((s) => s.showAllCategories);
+    const toggleShowAll = useCatalogStore((s) => s.toggleShowAllCategories);
 
-    // Первые 5 категорий
     const visibleCategories = allCategories.slice(0, 5);
-
-    // Остальные категории
     const hiddenCategories = allCategories.slice(5);
 
     return (
         <div className="flex gap-2 flex-wrap">
-            {/* Всегда показываем первые 5 */}
             {visibleCategories.map((cat) => (
                 <Button
                     key={cat}
@@ -29,18 +27,16 @@ export const CategoryTabs = () => {
                 </Button>
             ))}
 
-            {/* Кнопка More / Less */}
             {hiddenCategories.length > 0 && (
                 <Button
                     variant="category_default"
-                    onClick={() => setShowAll(!showAll)}
+                    onClick={toggleShowAll}
                     className="rounded-s2 font-regular"
                 >
                     {showAll ? "←" : "→"}
                 </Button>
             )}
 
-            {/* Скрытые категории, показываем если showAll = true */}
             {showAll &&
                 hiddenCategories.map((cat) => (
                     <Button

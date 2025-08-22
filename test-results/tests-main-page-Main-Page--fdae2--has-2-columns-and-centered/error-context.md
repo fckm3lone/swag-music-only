@@ -1,0 +1,56 @@
+# Page snapshot
+
+```yaml
+- dialog:
+  - button "All"
+  - button "String"
+  - button "Keyboard"
+  - button "Wind"
+  - button "Percussion"
+  - button "→"
+  - complementary:
+    - heading "Available" [level=4]
+    - checkbox
+    - text: Available
+    - checkbox
+    - text: On order
+    - heading "Price from to" [level=4]
+    - textbox "0.00 $"
+    - paragraph: "-"
+    - textbox "0.00 $"
+    - heading "Brands" [level=4]
+    - checkbox
+    - text: Rolland
+    - checkbox
+    - text: Yamaha
+    - checkbox
+    - text: Uptone
+    - checkbox
+    - text: AKG
+    - checkbox
+    - text: JBL
+    - button "..."
+    - heading "Types" [level=4]
+    - checkbox
+    - text: Electrical guitars
+    - checkbox
+    - text: Classic guitars
+    - checkbox
+    - text: Ukulele
+    - checkbox
+    - text: Keyboard
+    - checkbox
+    - text: Wind instruments
+    - heading "Colors" [level=4]
+    - checkbox
+    - text: Black
+    - checkbox
+    - text: White
+    - checkbox
+    - text: Red
+    - checkbox
+    - text: Blue
+    - checkbox
+    - text: Green
+  - button "Закрыть"
+```

@@ -17,11 +17,12 @@ export async function ProductGrid() {
 
     return (
         <Suspense fallback={<div>Загрузка товаров...</div>}>
-            <div className="flex flex-wrap gap-9.5">
+            <div
+                className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 w-full max-w-full
+                max-[870px]:grid-cols-2 max-[1090px]:grid-cols-3 max-[767px]:justify-items-center-safe max-[787px]:mx-auto max-[400px]:px-0 max-[400px]:grid-cols-1 max-[500px]:px-3"
+            >
                 {products.map((product) => (
-                    <div key={product.id} className="flex-grow-0 flex-shrink-0 basis-[190px]">
-                        <ProductCard {...product} />
-                    </div>
+                    <ProductCard key={product.id} {...product} />
                 ))}
             </div>
         </Suspense>
