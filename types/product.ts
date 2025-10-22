@@ -1,16 +1,19 @@
 // types/product.ts
-export interface ProductFeature {
-    label: string;
-    value: string;
-}
+import { Prisma, Product } from "@prisma/client";
 
-export interface Product {
-    id: number;
-    name: string;
-    slug: string;
-    price: number; // Используем string для отображения цены (например, "850.00")
-    image: string;
-    images: string[]; // Для галереи на странице товара
-    features: ProductFeature[];
-    description: string;
-}
+import Decimal = decimal.Decimal;
+
+
+export type ProductSearchItem = Prisma.ProductGetPayload<{
+    include: { images: true };
+}>;
+
+export type DecimalJS = Decimal
+
+export type ProductWithImages = Product & {
+    images: { url: string }[];
+    type?: { name: string }; // Опционально
+    brand?: { name: string }; // Опционально
+    color?: { name: string }; // Опционально
+    // price: DecimalJS; // Decimal из decimal.js
+};

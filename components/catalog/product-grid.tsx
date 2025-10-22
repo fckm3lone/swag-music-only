@@ -1,30 +1,136 @@
-import { ProductCard } from "./product-card";
-import { Suspense } from "react";
-import { Product } from "@/types/product";
-import { mockProducts } from "@/mock-products";
+// components/catalog/product-grid.tsx
+'use client';
 
-// Функция для получения mock-данных (заменится на fetch позже)
-async function fetchProducts(page: number = 1, limit: number = 10): Promise<Product[]> {
-    // Имитация задержки API для реалистичности
-    await new Promise((resolve) => setTimeout(resolve, 500));
+import {keepPreviousData, useQuery} from '@tanstack/react-query';
+import {useState} from 'react';
+import {ProductCard} from './product-card';
+import {Button, Skeleton} from '@/components/ui';
+import {Api} from '@/services/api-client';
+import {useCatalogStore} from '@/store/catalogStore';
+import {ProductWithImages} from '@/types/product';
+import {useCatalogSort} from '@/hooks/useCatalogSort';
 
-    const start = (page - 1) * limit;
-    return mockProducts.slice(start, start + limit);
-}
+type ProductGridProps = {
+    sort: string | null;
+};
 
-export async function ProductGrid() {
-    const products: Product[] = await fetchProducts();
+export function ProductGrid({ sort }: ProductGridProps) {
+    const [page, setPage] = useState(1);
+    const activeCategory = useCatalogStore((s) => s.activeCategory);
+    const priceFrom = useCatalogStore((s) => s.priceFrom);
+    const priceTo = useCatalogStore((s) => s.priceTo);
+    const checkedItems = useCatalogStore((s) => s.checkedItems);
+
+    const { data, isLoading, isError, error } = useQuery<{
+        products: ProductWithImages[];
+        total: number;
+    }>({
+        queryKey: ['products', page, activeCategory, priceFrom, priceTo, checkedItems],
+        queryFn: async () => {
+            const types = checkedItems['Types'] || [];
+            const brands = checkedItems['Brands'] || [];
+            const colors = checkedItems['Colors'] || [];
+            const availability = checkedItems['Available'] || [];
+
+            console.log('Fetching products with params:', {
+                page,
+                categoryId: activeCategory,
+                priceFrom,
+                priceTo,
+                types,
+                brands,
+                colors,
+                availability,
+            });
+
+            return Api.products.getProducts({
+                page,
+                limit: 10,
+                categoryId: activeCategory,
+                priceFrom,
+                priceTo,
+                types,
+                brands,
+                colors,
+                availability,
+            });
+        },
+        placeholderData: keepPreviousData,
+        staleTime: 30 * 1000,
+    });
+
+    const products = data?.products ?? [];
+    const total = data?.total ?? 0;
+    const totalPages = Math.ceil(total / 10);
+
+    // применяем сортировку
+    const { sortedProducts } = useCatalogSort(products, sort);
 
     return (
-        <Suspense fallback={<div>Загрузка товаров...</div>}>
+        <div>
+            {isError && (
+                <div className="text-red-500 text-center">
+                    Ошибка: {error?.message || 'Не удалось загрузить продукты'}
+                </div>
+            )}
+
             <div
                 className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 w-full max-w-full
-                max-[870px]:grid-cols-2 max-[1090px]:grid-cols-3 max-[767px]:justify-items-center-safe max-[787px]:mx-auto max-[400px]:px-0 max-[400px]:grid-cols-1 max-[500px]:px-3"
+        max-[870px]:grid-cols-2 max-[1090px]:grid-cols-3 max-[767px]:justify-items-center-safe max-[787px]:mx-auto max-[400px]:px-0 max-[400px]:grid-cols-1 max-[500px]:px-3"
             >
-                {products.map((product) => (
-                    <ProductCard key={product.id} {...product} />
-                ))}
+                {isLoading ? (
+                    Array(10)
+                        .fill(0)
+                        .map((_, index) => (
+                            <div key={index} className="flex flex-col gap-4">
+                                <Skeleton className="h-48 w-full rounded-lg" />
+                                <Skeleton className="h-4 w-3/4" />
+                                <Skeleton className="h-4 w-1/2" />
+                            </div>
+                        ))
+                ) : (
+                    <>
+                        {sortedProducts.length === 0 && (
+                            <div className="text-center text-gray-500 col-span-full">
+                                Нет продуктов по заданным фильтрам
+                            </div>
+                        )}
+
+                        {sortedProducts.map((product: ProductWithImages) => (
+                            <ProductCard
+                                key={product.id}
+                                id={product.id}
+                                name={product.name}
+                                price={Number(product.price)}
+                                images={product.images}
+                                slug={product.slug}
+                            />
+                        ))}
+                    </>
+                )}
             </div>
-        </Suspense>
+
+            {totalPages > 1 && (
+                <div className="flex justify-center gap-2 mt-4">
+                    <Button
+                        variant="outline"
+                        disabled={page === 1 || isLoading}
+                        onClick={() => setPage((prev) => prev - 1)}
+                    >
+                        Предыдущая
+                    </Button>
+                    <span className="self-center">
+            Страница {page} из {totalPages}
+          </span>
+                    <Button
+                        variant="outline"
+                        disabled={page === totalPages || isLoading}
+                        onClick={() => setPage((prev) => prev + 1)}
+                    >
+                        Следующая
+                    </Button>
+                </div>
+            )}
+        </div>
     );
 }

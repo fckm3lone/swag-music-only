@@ -1,11 +1,17 @@
-'use client';
+'use client'
 
 import React from "react";
-import { cn } from "@/lib/utils";
-import { Container } from "@/components/shared/container";
+import {cn} from "@/lib/utils";
+import {Container} from "@/components/shared/container";
 import Image from "next/image";
-import { Button, Input } from "@/components/ui"; // shadcn компоненты
-import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "@/components/ui/drawer";
+import {SearchInput} from "@/components/shared/search-input";
+import CartButton from "@/components/shared/cart-button";
+import Link from "next/link";
+import ProfileButton from "./profile-button";
+
+import {useRouter, useSearchParams} from "next/navigation";
+import toast from "react-hot-toast";
+
 
 interface HeaderProps {
     className?: string;
@@ -13,10 +19,35 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ className, showSearch = true }) => {
+    const toastShown = React.useRef(false);
+    const router = useRouter();
+    const searchParams = useSearchParams()
+React.useEffect(()=>{
+    let toastMessage:string | undefined = undefined
+    if(searchParams.has('verified')) toastMessage="Successfully verified";
+    if(toastMessage) {
+        setTimeout(()=> {
+            router.replace("/");
+            toast.success(toastMessage, { duration: 3000 });
+        }, 600);
+    }
+    if(searchParams.has('notAuth')) {
+        if (toastShown.current) return;
+
+        if (searchParams.has("notAuth")) {
+            toastShown.current = true;
+            toast.error("User is not authenticated", { duration: 3000 });
+            router.replace("/");
+        }
+
+    }
+},[])
+
     return (
         <header className={cn("", className)}>
             <Container className="flex items-center justify-between py-6">
                 {/* Левая часть */}
+                <Link href="/">
                 <div className="flex items-center gap-4 relative">
                     <Image alt="logo" src="/logo-next-music.png" width={50} height={50} />
                     <div className="relative">
@@ -26,42 +57,15 @@ export const Header: React.FC<HeaderProps> = ({ className, showSearch = true }) 
             </span>
                     </div>
                 </div>
+                </Link>
 
                 {/* Правая часть */}
                 <div className="flex items-center gap-4">
-                    {/* Search input: hidden on small screens, visible on md+ */}
-                    {showSearch && (
-                        <Input
-                            type="text"
-                            placeholder="Search..."
-                            className="w-100 rounded-lg hidden min-[780px]:block"
-                        />
-                    )}
-                    {/* Magnifier icon: visible on small screens only, opens Drawer with search */}
-                    {showSearch && (
-                        <Drawer direction="top">
-                            <DrawerTrigger asChild>
-                                <Button variant="header_ghost" size="icon" className="bg-transparent p-0 block min-[780px]:hidden">
-                                    <Image src="/search-glass.png" alt="Search" width={32} height={32} />
-                                </Button>
-                            </DrawerTrigger>
-                            <DrawerContent className="p-4 max-w-md mx-auto">
-                                <Input
-                                    type="text"
-                                    placeholder="Search..."
-                                    className="w-full rounded-lg mb-2"
-                                    autoFocus
-                                />
-                               
-                            </DrawerContent>
-                        </Drawer>
-                    )}
-                    <Button variant="header_ghost" size="icon" className="bg-transparent p-0">
-                        <Image src="/cart.png" alt="Cart" width={40} height={40} />
-                    </Button>
-                    <Button variant="header_ghost" size="icon" className="bg-transparent p-0">
-                        <Image src="/profile.png" alt="Profile" width={40} height={40} />
-                    </Button>
+                    {showSearch && <SearchInput />}
+                    <CartButton/>
+
+
+                    <ProfileButton/>
                 </div>
             </Container>
         </header>

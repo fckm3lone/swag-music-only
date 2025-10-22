@@ -1,0 +1,224 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id       Int      @id @default(autoincrement())
+  fullName String
+  email    String   @unique
+  password String
+  role     UserRole @default(USER)
+  verified DateTime?
+
+  provider   String?
+  providerId String?
+
+  cart              Cart?              @relation("UserCart")
+  order             Order[]
+  verificationCodes VerificationCode[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model Cart {
+  id     Int   @id @default(autoincrement())
+  user   User? @relation("UserCart", fields: [userId], references: [id])
+  userId Int?  @unique
+
+  token       String  @unique
+  totalAmount Decimal @default(0)
+  totalCount  Int     @default(0)
+
+  items CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id Int @id @default(autoincrement())
+
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+
+  product   Product @relation(fields: [productId], references: [id])
+  productId Int
+
+  quantity Int @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id     Int   @id @default(autoincrement())
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  totalAmount Decimal
+  totalCount  Int
+  status      OrderStatus @default(PENDING)
+  paymentId   String?
+
+  items OrderItem[]
+
+  fullName     String
+  email        String
+  phone        String
+  adress       String
+  deliveryTime DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id      Int   @id @default(autoincrement())
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  name     String
+  quantity Int    @default(1)
+}
+
+enum OrderStatus {
+  PENDING // заказ создан, но не оплачен
+  PAID // оплачен
+  CANCELED // отменён
+}
+
+model Category {
+  id         Int              @id @default(autoincrement())
+  name       String           @unique
+  products   Product[]        @relation("CategoryProducts")
+  attributes AttributeGroup[]
+  types      Type[]
+}
+
+model Brand {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
+
+model Color {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+}
+
+model Type {
+  id         Int       @id @default(autoincrement())
+  name       String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  products   Product[]
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String
+  description String
+  price       Decimal        @db.Decimal(10, 2)
+  images      ProductImage[] @relation("ProductImages")
+
+  slug String @unique
+
+  orderItems OrderItem[]
+  cartItems  CartItem[]
+
+  category   Category @relation("CategoryProducts", fields: [categoryId], references: [id])
+  categoryId Int
+
+  brand   Brand? @relation(fields: [brandId], references: [id])
+  brandId Int?
+
+  availability String?
+
+  color   Color? @relation(fields: [colorId], references: [id])
+  colorId Int?
+
+  type   Type? @relation(fields: [typeId], references: [id])
+  typeId Int?
+
+  attributes ProductAttribute[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  product   Product @relation("ProductImages", fields: [productId], references: [id])
+  productId Int
+}
+
+model AttributeGroup {
+  id         Int         @id @default(autoincrement())
+  name       String
+  category   Category    @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  attributes Attribute[]
+}
+
+model Attribute {
+  id               Int                @id @default(autoincrement())
+  name             String
+  attributeGroup   AttributeGroup     @relation(fields: [attributeGroupId], references: [id])
+  attributeGroupId Int
+  productValues    ProductAttribute[]
+}
+
+model ProductAttribute {
+  id          Int       @id @default(autoincrement())
+  value       String // значение атрибута (например "88", "Да", "Нет")
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   Int
+  attribute   Attribute @relation(fields: [attributeId], references: [id])
+  attributeId Int
+}
+
+model VerificationCode {
+  id     Int   @id @default(autoincrement())
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  email String? // можно для гостевых случаев без userId
+  phone String? // если используешь SMS
+
+  code String // сам код (например, 6 цифр)
+  type String // "EMAIL_CONFIRMATION", "PASSWORD_RESET", "2FA"
+
+  expiresAt DateTime? // срок жизни кода
+  used      Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, code])
+}

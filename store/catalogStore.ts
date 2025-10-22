@@ -1,21 +1,16 @@
 // store/catalogStore.ts
-import { create } from "zustand";
+import { create } from 'zustand';
 
 type CatalogState = {
-    // CategoryTabs
-    activeCategory: string;
+    activeCategory: number | undefined;
     showAllCategories: boolean;
-    setActiveCategory: (cat: string) => void;
+    setActiveCategory: (categoryId: number | undefined) => void;
     toggleShowAllCategories: () => void;
-
-    // FilterSidebar
     checkedItems: Record<string, string[]>;
     showMoreStates: Record<string, boolean>;
     toggleItem: (groupTitle: string, item: string) => void;
     isItemChecked: (groupTitle: string, item: string) => boolean;
     toggleShowMore: (title: string) => void;
-
-    // Price
     priceFrom: string;
     priceTo: string;
     setPriceFrom: (value: string) => void;
@@ -23,21 +18,23 @@ type CatalogState = {
 };
 
 export const useCatalogStore = create<CatalogState>((set, get) => ({
-    // CategoryTabs
-    activeCategory: "All",
+    activeCategory: undefined,
     showAllCategories: false,
-    setActiveCategory: (cat) => set({ activeCategory: cat }),
+    setActiveCategory: (categoryId) =>
+        set({
+            activeCategory: categoryId,
+            checkedItems: {}, // Сбрасываем фильтры
+            showMoreStates: {}, // Сбрасываем состояния "Показать больше"
+        }),
     toggleShowAllCategories: () =>
         set((state) => ({ showAllCategories: !state.showAllCategories })),
 
-    // FilterSidebar
     checkedItems: {},
     showMoreStates: {},
     toggleItem: (groupTitle, item) => {
         set((state) => {
             const prevGroupItems = state.checkedItems[groupTitle] || [];
             const isAlreadyChecked = prevGroupItems.includes(item);
-
             return {
                 checkedItems: {
                     ...state.checkedItems,
@@ -60,9 +57,8 @@ export const useCatalogStore = create<CatalogState>((set, get) => ({
         }));
     },
 
-    // Price
-    priceFrom: "",
-    priceTo: "",
+    priceFrom: '',
+    priceTo: '',
     setPriceFrom: (value) => set({ priceFrom: value }),
     setPriceTo: (value) => set({ priceTo: value }),
 }));

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
+import {Providers} from "@/app/providers";
 
 
 
@@ -17,9 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-helvetica font-regular bg-background text-foreground">
+    <body>
+    <Providers>
         {children}
-      </body>
+    </Providers>
+    </body>
     </html>
   );
 }

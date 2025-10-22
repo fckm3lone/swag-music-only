@@ -1,19 +1,11 @@
+// components/product/product-features-preview.tsx
 "use client"
 
-import { Button } from "@/components/ui";
+import { Button, Skeleton } from "@/components/ui";
 import { FC } from "react";
+import { ProductPageType } from "@/services/products";
 
-type Feature = {
-    label: string;
-    value: string;
-};
-
-interface ProductFeaturesPreviewProps {
-    features: Feature[];
-    onMoreClick?: () => void; // если нужно вручную обработать клик
-}
-
-export const ProductFeaturesPreview: FC<ProductFeaturesPreviewProps> = ({ features, onMoreClick }) => {
+export const ProductFeaturesPreview: FC<ProductPageType & { isLoading?: boolean }> = ({ features, isLoading }) => {
     const displayed = features.slice(0, 8);
 
     const scrollToFullFeatures = () => {
@@ -23,29 +15,39 @@ export const ProductFeaturesPreview: FC<ProductFeaturesPreviewProps> = ({ featur
         }
     };
 
+    if (isLoading) {
+        return (
+            <div className="w-full">
+                <Skeleton className="h-6 w-1/2 mb-5" /> {/* Заголовок "Features" */}
+                <ul className="text-md space-y-3 mb-6 max-[767px]:text-sm">
+                    {Array(8).fill(0).map((_, i) => (
+                        <li key={i}>
+                            <Skeleton className="h-4 w-full" /> {/* Одна цельная строка для пары ключ-значение */}
+                        </li>
+                    ))}
+                </ul>
+                <Skeleton className="h-4 w-10 mt-6" /> {/* Кнопка "..." */}
+            </div>
+        );
+    }
+
     return (
-        <div>
+        <div className="w-full">
             <h3 className="font-medium text-xl mb-5 tracking-widest">Features</h3>
-            <ul className="text-md space-y-1.5 mb-4">
+            <ul className="text-md space-y-1.5 mb-4 max-[767px]:text-sm">
                 {displayed.map((f, i) => (
                     <li key={i}>
-                        <span className="text-foreground">{f.label}:</span>{" "}
-                        <span
-                            className={`${
-                                f.value === "нет" ? "text-secondary" : "text-secondary"
-                            }`}
-                        >
-              {f.value}
-            </span>
+                        <span className="text-foreground">{f.attribute.name}:</span>{" "}
+                        <span className={f.value === "нет" ? "text-secondary" : "text-secondary"}>
+                            {f.value}
+                        </span>
                     </li>
                 ))}
             </ul>
-
-            {/* троеточие-кнопка */}
             {features.length > 6 && (
                 <Button
                     variant="link"
-                    onClick={onMoreClick || scrollToFullFeatures}
+                    onClick={scrollToFullFeatures}
                     className="text-lg px-0 py-0 w-auto h-auto font-thin tracking-wide text-foreground"
                 >
                     ...
