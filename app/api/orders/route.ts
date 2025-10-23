@@ -1,7 +1,7 @@
 import {NextRequest, NextResponse} from "next/server";
 import prisma from "@/prisma/prisma-client";
 import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {authOptions} from "@/lib/constants/authOptions";
 
 // Получение информации о заказе пользователя по userId
 export async function GET(req: NextRequest) {

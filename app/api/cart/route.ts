@@ -2,7 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import prisma, {withRetry} from "@/prisma/prisma-client";
 import {randomUUID} from "crypto";
 import {getServerSession} from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route";
+import {authOptions} from "@/lib/constants/authOptions";
 
 // Вспомогательная функция для получения корзины по userId или token
 import type {Cart} from "@prisma/client";
