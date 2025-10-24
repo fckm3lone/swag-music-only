@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
-import {Drawer, DrawerContent, DrawerTrigger} from '@/components/ui/drawer';
+import {Sheet, SheetContent, SheetTrigger} from '@/components/ui/sheet';
 import {Search} from 'lucide-react';
 import {useClickAway} from 'react-use';
 import {useQuery} from '@tanstack/react-query';
@@ -86,52 +86,55 @@ export const SearchInput: React.FC<SearchInputProps> = ({ className }) => {
                     ) : null}
                 </div>
 
-                {/* Мобильный Drawer */}
-                <Drawer direction="top">
-                    <DrawerTrigger asChild>
-                        <Button
-                            variant="header_ghost"
-                            size="icon"
-                            className="bg-transparent p-0 block min-[780px]:hidden"
-                            onClick={() => setFocused(true)}
-                        >
-                            <Search className="absolute top-1/2 -translate-y-1/2 left-3  text-gray-400" />
-                        </Button>
-                    </DrawerTrigger>
-                    <DrawerContent className="p-4 max-w-md mx-auto">
-                        <Input
-                            type="text"
-                            placeholder="Search..."
-                            className="w-full rounded-lg mb-2 bg-white"
-                            autoFocus
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                        {isLoading ? (
-                            <></>
-                        ) : products.length > 0 ? (
-                            <div className="mt-2 space-y-2">
-                                {products.map((p) => (
-                                    <Link
-                                        key={p.id}
-                                        href={`/product/${generateSlug(p.name)}`}
-                                        onClick={onClickItem}
-                                        className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10 rounded-lg"
-                                    >
-                                        <Image
-                                            src={p.images[0]?.url ?? '/placeholder.png'}
-                                            alt={p.name}
-                                            width={40}
-                                            height={40}
-                                            className=""
-                                        />
-                                        <span>{p.name}</span>
-                                    </Link>
-                                ))}
-                            </div>
-                        ) : null}
-                    </DrawerContent>
-                </Drawer>
+                {/* Мобильный Sheet (вместо Drawer) */}
+                <Sheet onOpenChange={(open) => !open && setFocused(false)}>
+                  <SheetTrigger asChild>
+                    <Button
+                      variant="header_ghost"
+                      size="icon"
+                      className="bg-transparent p-0 block min-[780px]:hidden"
+                      onClick={() => setFocused(true)}
+                    >
+                      <Search className="absolute top-1/2 -translate-y-1/2 left-3  text-gray-400" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent
+                    side="top"
+                    className="p-4 w-full max-w-none border-0 rounded-none pt-[env(safe-area-inset-top)]"
+                  >
+                    <Input
+                      type="text"
+                      placeholder="Search..."
+                      className="w-full rounded-lg mb-2 bg-white text-base"
+                      autoFocus
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    {isLoading ? (
+                      <></>
+                    ) : products.length > 0 ? (
+                      <div className="mt-2 space-y-2">
+                        {products.map((p) => (
+                          <Link
+                            key={p.id}
+                            href={`/product/${generateSlug(p.name)}`}
+                            onClick={onClickItem}
+                            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10 rounded-lg"
+                          >
+                            <Image
+                              src={p.images[0]?.url ?? '/placeholder.png'}
+                              alt={p.name}
+                              width={40}
+                              height={40}
+                              className="object-contain"
+                            />
+                            <span>{p.name}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
+                  </SheetContent>
+                </Sheet>
             </div>
         </>
     );

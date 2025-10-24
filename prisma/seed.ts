@@ -14,38 +14,40 @@ import {
 
 async function up() {
 
-    await prisma.user.createMany({
-        data: [
-            {
-                fullName: 'Albert Ilalov',
-                email: 'ilalov@mail.ru',
-                password: hashSync('1111', 10),
-                verified: new Date(),
-                role: 'ADMIN',
-            },
+    const admin = await prisma.user.upsert({
+      where: { email: 'ilalov@mail.ru' },
+      update: {},
+      create: {
+        fullName: 'Albert Ilalov',
+        email: 'ilalov@mail.ru',
+        password: hashSync('1111', 10),
+        verified: new Date(),
+        role: 'ADMIN',
+      },
+    });
 
-            {
-                fullName: 'Danis Timofeev 77',
-                email: 'timofeev@mail.ru',
-                password: hashSync('3333', 10),
-                verified: new Date(),
-                role: 'USER',
-            }
-        ]
-    })
-
+    const user = await prisma.user.upsert({
+      where: { email: 'timofeev@mail.ru' },
+      update: {},
+      create: {
+        fullName: 'Danis Timofeev 77',
+        email: 'timofeev@mail.ru',
+        password: hashSync('3333', 10),
+        verified: new Date(),
+        role: 'USER',
+      },
+    });
 
 
     await prisma.cart.createMany({
-        data : [
-            {
-            userId: 1,
-            token: "7bd02c94-872c-4c01-a157-f9422ce8ec3b",
-            totalAmount: 0.00,
-        }
-        ]
-    })
-
+      data: [
+        {
+          userId: admin.id,
+          token: '7bd02c94-872c-4c01-a157-f9422ce8ec3b',
+          totalAmount: 0.0,
+        },
+      ],
+    });
 
 
 
@@ -82,17 +84,47 @@ async function main() {
 
     try {
 
-        await prisma.productAttribute.deleteMany();
-        await prisma.productImage.deleteMany();
-        await prisma.product.deleteMany();
-        await prisma.attribute.deleteMany();
-        await prisma.attributeGroup.deleteMany();
-        await prisma.type.deleteMany();
-        await prisma.color.deleteMany();
-        await prisma.brand.deleteMany();
-        await prisma.category.deleteMany();
-        await prisma.cart.deleteMany();
-        await prisma.user.deleteMany();
+        // Быстро чистим всё и сбрасываем автоинкременты (PostgreSQL)
+        try {
+          await prisma.$executeRawUnsafe(`
+            TRUNCATE TABLE
+              "CartItem",
+              "OrderItem",
+              "Order",
+              "VerificationCode",
+              "ProductAttribute",
+              "ProductImage",
+              "Product",
+              "Attribute",
+              "AttributeGroup",
+              "Type",
+              "Color",
+              "Brand",
+              "Category",
+              "Cart",
+              "User"
+            RESTART IDENTITY CASCADE;
+          `);
+        } catch (e) {
+          // Фоллбэк для SQLite/других провайдеров — порядок важен
+          await prisma.$transaction([
+            prisma.cartItem.deleteMany(),
+            prisma.orderItem.deleteMany(),
+            prisma.order.deleteMany(),
+            prisma.verificationCode.deleteMany(),
+            prisma.productAttribute.deleteMany(),
+            prisma.productImage.deleteMany(),
+            prisma.product.deleteMany(),
+            prisma.attribute.deleteMany(),
+            prisma.attributeGroup.deleteMany(),
+            prisma.type.deleteMany(),
+            prisma.color.deleteMany(),
+            prisma.brand.deleteMany(),
+            prisma.category.deleteMany(),
+            prisma.cart.deleteMany(),
+            prisma.user.deleteMany(),
+          ]);
+        }
 
         await up();
     } catch (e) {

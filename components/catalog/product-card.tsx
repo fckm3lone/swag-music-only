@@ -35,19 +35,15 @@ export const ProductCard = ({id, name, price, images, slug }: ProductCardProps) 
         <div className="group cursor-pointer">
             <div className="flex flex-col items-start text-left transition-all duration-200 group-hover:scale-110">
                 <Link href={`/product/${slug}`} className="w-full">
-                    <div className="bg-card w-[190px] h-[190px] flex items-center justify-center rounded-2xl overflow-hidden mb-2">
+                    <div className="relative bg-card w-[190px] h-[190px] flex items-center justify-center rounded-2xl overflow-hidden mb-2">
                         <Image
                             src={imageUrl}
                             alt={name}
-                            width={320}
-                            height={320}
-                            style={{
-                                objectFit: "contain",
-                                maxWidth: "320px",
-                                maxHeight: "320px",
-                                width: "auto",
-                                height: "auto",
-                            }}
+                            fill
+                            className="object-contain"
+                            sizes="190px"
+                            loading="lazy"
+
                         />
                     </div>
                     <p className="text-foreground text-md font-regular mb-1">

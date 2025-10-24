@@ -40,9 +40,9 @@ export const colors = [
 
 // Типы
 export const types = [
-    { name: 'Digital Piano', categoryId: 1 }, // Предполагаем, что Keyboard получит id: 1
-    { name: 'Acoustic Guitar', categoryId: 2 }, // String -> id: 2
-    { name: 'Condenser Microphone', categoryId: 3 }, // Microphones -> id: 3
+    { name: 'Digital Piano', categoryId: 2 }, // Предполагаем, что Keyboard получит id: 1
+    { name: 'Acoustic Guitar', categoryId: 1 }, // String -> id: 2
+    { name: 'Condenser Microphone', categoryId: 6 }, // Microphones -> id: 3
 ];
 
 // Группы атрибутов
@@ -63,78 +63,138 @@ export const attributes = [
     { name: 'Линейный выход', attributeGroupId: 1 },
     { name: 'USB', attributeGroupId: 1 },
     { name: 'Стойка в комплекте', attributeGroupId: 1 },
+    { name: 'Пример 1', attributeGroupId: 1 },
+    { name: 'Пример 2', attributeGroupId: 1 },
+    { name: 'Пример 3', attributeGroupId: 1 },
+    { name: 'Пример 4', attributeGroupId: 1 },
+    { name: 'Пример 5', attributeGroupId: 1 },
+    { name: 'Пример 6', attributeGroupId: 1 },
+    { name: 'Пример 7', attributeGroupId: 1 },
+    { name: 'Пример 8', attributeGroupId: 1 },
     // Для гитары
     { name: 'Тип', attributeGroupId: 2 },
     { name: 'Количество струн', attributeGroupId: 2 },
+    { name: 'Пример 1', attributeGroupId: 2 },
+    { name: 'Пример 2', attributeGroupId: 2 },
+    { name: 'Пример 3', attributeGroupId: 2 },
+    { name: 'Пример 4', attributeGroupId: 2 },
+    { name: 'Пример 5', attributeGroupId: 2 },
+    { name: 'Пример 6', attributeGroupId: 2 },
+    { name: 'Пример 7', attributeGroupId: 2 },
+    { name: 'Пример 8', attributeGroupId: 2 },
     // Для микрофона
     { name: 'Тип', attributeGroupId: 3 },
+    { name: 'Пример 1', attributeGroupId: 3 },
+    { name: 'Пример 2', attributeGroupId: 3 },
+    { name: 'Пример 3', attributeGroupId: 3 },
+    { name: 'Пример 4', attributeGroupId: 3 },
+    { name: 'Пример 5', attributeGroupId: 3 },
+    { name: 'Пример 6', attributeGroupId: 3 },
+    { name: 'Пример 7', attributeGroupId: 3 },
+    { name: 'Пример 8', attributeGroupId: 3 },
+    // Дополнительные атрибуты (чтобы хватало по 15 на товар)
+    // Для гитары (attributeGroupId: 2)
+    { name: 'Пример 9', attributeGroupId: 2 },
+    { name: 'Пример 10', attributeGroupId: 2 },
+    { name: 'Пример 11', attributeGroupId: 2 },
+    { name: 'Пример 12', attributeGroupId: 2 },
+    { name: 'Пример 13', attributeGroupId: 2 },
+    { name: 'Пример 14', attributeGroupId: 2 },
+    { name: 'Пример 15', attributeGroupId: 2 },
+    // Для микрофона (attributeGroupId: 3)
+    { name: 'Пример 9', attributeGroupId: 3 },
+    { name: 'Пример 10', attributeGroupId: 3 },
+    { name: 'Пример 11', attributeGroupId: 3 },
+    { name: 'Пример 12', attributeGroupId: 3 },
+    { name: 'Пример 13', attributeGroupId: 3 },
+    { name: 'Пример 14', attributeGroupId: 3 },
+    { name: 'Пример 15', attributeGroupId: 3 },
 ];
 
 // Продукты
-export const rawProducts = [
-    {
-        name: 'ROLAND FP-30X-BK',
-        description:
-            'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.',
-        price: 850.0,
-        categoryId: 1,
-        brandId: 1,
-        colorId: 1,
-        typeId: 1,
-        availability:'Available'
-    },
-    {
-        name: 'YAMAHA F310',
-        description: 'YAMAHA F310 — отличная акустическая гитара для начинающих.',
-        price: 210.0,
-        categoryId: 2,
-        brandId: 2,
-        colorId: 2,
-        typeId: 2,
-        availability:'Available'
-    },
-    {
-        name: 'RODE NT1',
-        description: 'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.',
-        price: 350.0,
-        categoryId: 3,
-        brandId: 3,
-        colorId: 1,
-        typeId: 3,
-        availability:'Available'
-    },
-    {
-        name: 'ROLAND FP-30X-B',
-        description:
-            'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.',
-        price: 850.0,
-        categoryId: 1,
-        brandId: 1,
-        colorId: 1,
-        typeId: 1,
-        availability:'On order'
-    },
-    {
-        name: 'YAMAHA F31',
-        description: 'YAMAHA F310 — отличная акустическая гитара для начинающих.',
-        price: 210.0,
-        categoryId: 2,
-        brandId: 2,
-        colorId: 2,
-        typeId: 2,
-        availability:'On order'
-    },
-    {
-        name: 'RODE NT2',
-        description: 'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.',
-        price: 350.0,
-        categoryId: 3,
-        brandId: 3,
-        colorId: 1,
-        typeId: 3,
-        availability:'On order'
-    },
-];
+// БАЗОВЫЕ товары (3 шт.)
+const baseProducts = [
+  {
+    name: 'ROLAND FP-30X-BK',
+    description:
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.' +
+      'ROLANDE FP-30X-BK — это высококачественное цифровое пианино, идеально подходящее для начинающих и профессиональных музыкантов.',
+    price: 850.0,
+    categoryId: 2,
+    brandId: 1,
+    colorId: 1,
+    typeId: 1,
+    availability: 'Available',
+  },
+  {
+    name: 'YAMAHA F310',
+    description:
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.' +
+      'YAMAHA F310 — отличная акустическая гитара для начинающих.',
+    price: 210.0,
+    categoryId: 1,
+    brandId: 2,
+    colorId: 2,
+    typeId: 2,
+    availability: 'Available',
+  },
+  {
+    name: 'RODE NT1',
+    description:
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.' +
+      'RODE NT1 — профессиональный микрофон для записи вокала и инструментов.',
+    price: 350.0,
+    categoryId: 6,
+    brandId: 3,
+    colorId: 1,
+    typeId: 3,
+    availability: 'Available',
+  },
+] as const;
+
+// По 12 товаров на каждую базу (1 оригинал + 11 копий) => 36 товаров
+const COPIES_PER_BASE = 11;
+
+export const rawProducts = baseProducts.flatMap((p) => {
+  const copies = Array.from({ length: COPIES_PER_BASE }, (_v, i) => ({
+    ...p,
+    name: `${p.name} ${i + 2}`,
+    // немного варьируем наличие
+    availability: i % 2 === 0 ? 'Available' : 'On order',
+  }));
+  return [p, ...copies];
+});
 
 export const products = rawProducts.map((p) => ({
     ...p,
@@ -142,73 +202,43 @@ export const products = rawProducts.map((p) => ({
 }));
 
 // Изображения продуктов
-export const productImages = [
-    // Для продукта ROLAND FP-30X-BK (productId: 1)
-    { url: '/products/piano-1.png', productId: 1 },
-    { url: '/products/microphone-1.png', productId: 1 },
-    { url: '/products/piano-1.png', productId: 1 },
-    { url: '/products/microphone-1.png', productId: 1 },
-    { url: '/products/guitar-1.png', productId: 1 },
-    { url: '/products/piano-1.png', productId: 1 },
-    // Для продукта YAMAHA F310 (productId: 2)
-    { url: '/products/guitar-1.png', productId: 2 },
-    { url: '/products/guitar-1.png', productId: 2 },
-    { url: '/products/piano-1.png', productId: 2 },
-    { url: '/products/microphone-1.png', productId: 2 },
-    // Для продукта RODE NT1 (productId: 3)
-    { url: '/products/microphone-1.png', productId: 3 },
-    { url: '/products/piano-1.png', productId: 3 },
-    { url: '/products/microphone-1.png', productId: 3 },
-    { url: '/products/piano-1.png', productId: 3 },
-    { url: '/products/microphone-1.png', productId: 3 },
-    // Для второго ROLAND FP-30X-BK (productId: 4)
-    { url: '/products/piano-1.png', productId: 4 },
-    { url: '/products/microphone-1.png', productId: 4 },
-    { url: '/products/piano-1.png', productId: 4 },
-    { url: '/products/microphone-1.png', productId: 4 },
-    { url: '/products/guitar-1.png', productId: 4 },
-    { url: '/products/piano-1.png', productId: 4 },
-    // Для второго YAMAHA F310 (productId: 5)
-    { url: '/products/guitar-1.png', productId: 5 },
-    { url: '/products/guitar-1.png', productId: 5 },
-    { url: '/products/piano-1.png', productId: 5 },
-    { url: '/products/microphone-1.png', productId: 5 },
-    // Для второго RODE NT1 (productId: 6)
-    { url: '/products/microphone-1.png', productId: 6 },
-    { url: '/products/piano-1.png', productId: 6 },
-    { url: '/products/microphone-1.png', productId: 6 },
-    { url: '/products/piano-1.png', productId: 6 },
-    { url: '/products/microphone-1.png', productId: 6 },
-];
+// Наборы изображений по типу товара
+const imageSetsByType: Record<number, string[]> = {
+  1: ['/products/piano-1.png', '/products/piano-2.png', '/products/piano-3.png'], // Digital Piano
+  2: ['/products/guitar-1.png', '/products/guitar-2.png', '/products/guitar-3.png'], // Acoustic Guitar
+  3: ['/products/microphone-1.png', '/products/microphone-1.png', '/products/microphone-1.png'], // Microphone (повторяем одно)
+};
+
+export const productImages = rawProducts.flatMap((p, idx) => {
+  const productId = idx + 1;
+  const set = imageSetsByType[p.typeId] ?? imageSetsByType[3];
+  return set.map((url) => ({ url, productId }));
+});
 
 // Атрибуты продуктов
-export const productAttributes = [
-    // Для продукта ROLAND FP-30X-BK (productId: 1)
-    { value: '88', productId: 1, attributeId: 1 },
-    { value: 'молоточковая', productId: 1, attributeId: 2 },
-    { value: 'нет', productId: 1, attributeId: 3 },
-    { value: '15-24 Вт', productId: 1, attributeId: 4 },
-    { value: 'да', productId: 1, attributeId: 5 },
-    { value: 'да', productId: 1, attributeId: 6 },
-    { value: 'да', productId: 1, attributeId: 7 },
-    { value: 'нет', productId: 1, attributeId: 8 },
-    // Для продукта YAMAHA F310 (productId: 2)
-    { value: 'акустическая гитара', productId: 2, attributeId: 9 },
-    { value: '6', productId: 2, attributeId: 10 },
-    // Для продукта RODE NT1 (productId: 3)
-    { value: 'конденсаторный микрофон', productId: 3, attributeId: 11 },
-    // Для второго ROLAND FP-30X-BK (productId: 4)
-    { value: '88', productId: 4, attributeId: 1 },
-    { value: 'молоточковая', productId: 4, attributeId: 2 },
-    { value: 'нет', productId: 4, attributeId: 3 },
-    { value: '15-24 Вт', productId: 4, attributeId: 4 },
-    { value: 'да', productId: 4, attributeId: 5 },
-    { value: 'да', productId: 4, attributeId: 6 },
-    { value: 'да', productId: 4, attributeId: 7 },
-    { value: 'нет', productId: 4, attributeId: 8 },
-    // Для второго YAMAHA F310 (productId: 5)
-    { value: 'акустическая гитара', productId: 5, attributeId: 9 },
-    { value: '6', productId: 5, attributeId: 10 },
-    // Для второго RODE NT1 (productId: 6)
-    { value: 'конденсаторный микрофон', productId: 6, attributeId: 11 },
-];
+const pianoAttrs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+const guitarAttrs = [17,18,19,20,21,22,23,24,25,26,36,37,38,39,40];
+const micAttrs    = [27,28,29,30,31,32,33,34,35,43,44,45,46,47,48];
+
+export const productAttributes = rawProducts.flatMap((p, idx) => {
+  const productId = idx + 1;
+  let ids: number[] = [];
+  let values: string[] = [];
+
+  if (p.typeId === 1) {
+    ids = pianoAttrs;
+    values = ['88', 'молоточковая', 'нет', '15-24 Вт', 'да', 'да', 'да', 'нет'];
+  } else if (p.typeId === 2) {
+    ids = guitarAttrs;
+    values = ['акустическая гитара', '6'];
+  } else {
+    ids = micAttrs;
+    values = ['конденсаторный микрофон'];
+  }
+
+  return ids.map((attributeId, i) => ({
+    value: values[i] ?? '—',
+    productId,
+    attributeId,
+  }));
+});
