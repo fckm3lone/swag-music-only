@@ -4,7 +4,6 @@
 import {Button, Skeleton} from '@/components/ui';
 import {useCatalogStore} from '@/store/catalogStore';
 import {useQuery} from '@tanstack/react-query';
-import {Api} from "@/services/api-client";
 import React from "react";
 
 
@@ -14,14 +13,14 @@ type Category = {
 };
 
 const fetchCategories = async (): Promise<Category[]> => {
-   try {
-       return await Api.categories.getCategories();
-   } catch (error) {
-       console.error(error);
-       throw new Error('Failed to fetch categories');
-   }
-
-
+    try {
+        const res = await fetch('/api/categories');
+        if (!res.ok) throw new Error('Failed to fetch categories');
+        return res.json();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch categories');
+    }
 };
 
 export const CategoryTabs = () => {

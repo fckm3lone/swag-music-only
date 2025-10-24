@@ -5,7 +5,6 @@ import {keepPreviousData, useQuery} from '@tanstack/react-query';
 import {useState} from 'react';
 import {ProductCard} from './product-card';
 import {Button, Skeleton} from '@/components/ui';
-import {Api} from '@/services/api-client';
 import {useCatalogStore} from '@/store/catalogStore';
 import {ProductWithImages} from '@/types/product';
 import {useCatalogSort} from '@/hooks/useCatalogSort';
@@ -43,17 +42,17 @@ export function ProductGrid({ sort }: ProductGridProps) {
                 availability,
             });
 
-            return Api.products.getProducts({
-                page,
-                limit: 10,
-                categoryId: activeCategory,
-                priceFrom,
-                priceTo,
-                types,
-                brands,
-                colors,
-                availability,
-            });
+            return fetch(`/api/products?` + new URLSearchParams({
+                page: String(page),
+                limit: '10',
+                categoryId: activeCategory?.toString() ?? '',
+                priceFrom: priceFrom ?? '',
+                priceTo: priceTo ?? '',
+                types: (checkedItems['Types'] ?? []).join(','),
+                brands: (checkedItems['Brands'] ?? []).join(','),
+                colors: (checkedItems['Colors'] ?? []).join(','),
+                availability: (checkedItems['Available'] ?? []).join(','),
+            })).then(res => res.json());
         },
         placeholderData: keepPreviousData,
         staleTime: 30 * 1000,

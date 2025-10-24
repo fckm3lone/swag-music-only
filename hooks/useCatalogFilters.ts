@@ -1,36 +1,61 @@
 // hooks/useCatalogFilters.ts
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
+import {PublicAttribute, PublicAttributeGroup} from "@/types/public";
 
-import {Brand, Color, Type, AttributeGroup, Attribute} from "@prisma/client";
-import {Api} from "@/services/api-client";
+
+// убран Api, используется fetch
 
 type AttributeGroupUI = {
     title: string;
     items: string[];
 };
 
-export type AttributeGroupExtended = AttributeGroup & {
-    attributes: Attribute[];
+export type AttributeGroupExtended = PublicAttributeGroup & {
+    attributes: PublicAttribute[];
 }
 
+type PrivateType = {
+    id: number;
+    name: string;
+};
+
+type PrivateBrand = {
+    id: number;
+    name: string;
+};
+
+type PrivateColor = {
+    id: number;
+    name: string;
+};
+
 export function useCatalogFilters(categoryId?: number) {
-    const { data: brands, isLoading: loadingBrands } = useQuery<Brand[]>({
+    const { data: brands, isLoading: loadingBrands } = useQuery<PrivateBrand[]>({
         queryKey: ["brands"],
-        queryFn: Api.brands.getBrands,
+        queryFn: async () => {
+            const res = await fetch("/api/brands");
+            if (!res.ok) throw new Error("Failed to fetch brands");
+            return res.json();
+        },
     });
 
-    const { data: colors, isLoading: loadingColors } = useQuery<Color[]>({
+    const { data: colors, isLoading: loadingColors } = useQuery<PrivateColor[]>({
         queryKey: ["colors"],
-        queryFn: Api.colors.getColors,
+        queryFn: async () => {
+            const res = await fetch("/api/colors");
+            if (!res.ok) throw new Error("Failed to fetch colors");
+            return res.json();
+        },
     });
 
-    const { data: types, isLoading: loadingTypes } = useQuery<Type[]>({
+    const { data: types, isLoading: loadingTypes } = useQuery<PrivateType[]>({
         queryKey: ['types', categoryId],
         queryFn: async () => {
-            console.log('Fetching types for categoryId:', categoryId);
-            const result = await Api.types.getTypes(categoryId);
-            console.log('Types received:', result);
-            return result;
+            const params = new URLSearchParams();
+            if (categoryId) params.append('categoryId', String(categoryId));
+            const res = await fetch(`/api/types?${params.toString()}`);
+            if (!res.ok) throw new Error("Failed to fetch types");
+            return res.json();
         },
     });
     // const { data: attributes, isLoading: loadingAttributes } = useQuery<AttributeGroupExtended[]>({

@@ -1,12 +1,14 @@
 // app/product/[slug]/loading.tsx
 
 import {Container, PageTitle} from "@/components/shared";
-import { ProductImageGallery } from "@/components/product/product-gallery";
-import { ProductFeaturesPreview } from "@/components/product/product-features-preview";
-import { ProductPriceBlock } from "@/components/product/product-price-block";
-import { ProductDescription } from "@/components/product/product-description";
-import { ProductAllFeatures } from "@/components/product/product-all-features";
-import { Skeleton } from "@/components/ui";
+import {ProductImageGallery} from "@/components/product/product-gallery";
+import {
+    ProductFeaturesPreview
+} from "@/components/product/product-features-preview";
+import {ProductPriceBlock} from "@/components/product/product-price-block";
+import {ProductDescription} from "@/components/product/product-description";
+import {ProductAllFeatures} from "@/components/product/product-all-features";
+
 
 export default function Loading() {
     return (
@@ -21,7 +23,7 @@ export default function Loading() {
 
                     <div className="flex flex-col w-[320px] max-[876px]:w-full">
                         {/* Скелетон превью фич */}
-                        <ProductFeaturesPreview features={[]} isLoading={true} />
+                        <ProductFeaturesPreview isLoading={true} />
 
                         {/* Скелетон блока цены */}
                         <ProductPriceBlock price={0} isLoading={true}  />
@@ -35,7 +37,7 @@ export default function Loading() {
 
                 <div className="mt-12">
                     {/* Скелетон всех фич */}
-                    <ProductAllFeatures features={[]} isLoading={true} />
+                    <ProductAllFeatures isLoading={true} />
                 </div>
             </div>
         </Container>

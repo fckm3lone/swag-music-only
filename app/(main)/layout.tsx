@@ -5,7 +5,7 @@ import {Suspense} from "react";
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <Suspense>
+            <Suspense fallback={null}>
             <Header showSearch={true} />
             </Suspense>
             {children}

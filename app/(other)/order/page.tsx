@@ -31,7 +31,7 @@ export default async function OrderPage () {
 
             <div className='flex flex-col gap-10 max-w-230'>
                 <CartDataForOrder/>
-                <PersonalDataForOrder/>
+            <PersonalDataForOrder/>
                 <DeliveryDataForOrder/>
             </div>
 

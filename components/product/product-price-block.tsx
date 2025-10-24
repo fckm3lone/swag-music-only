@@ -1,14 +1,12 @@
 // components/product/product-price.tsx
 "use client";
 
-import { FC } from "react";
 import {Button, Skeleton} from "@/components/ui";
-import { ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
 import {useCartService} from "@/hooks/useCartService";
 
 interface ProductPriceBlockProps {
-    id: number;
+    id?: number;
     price: number;
     currency?: string; // по умолчанию "$"
     onAddToCart?: () => void;
@@ -50,7 +48,7 @@ export const ProductPriceBlock: React.FC<ProductPriceBlockProps & { isLoading?: 
 
             <Button
                 variant="link"
-                onClick={()=> handleAddToCart(id)}
+                onClick={()=> handleAddToCart(Number(id))}
                 className="w-auto p-0 text-secondary cursor-pointer gap-2 uppercase text-2xl font-regular justify-start max-[767px]:text-xl"
             >
                 TO CART

@@ -6,13 +6,13 @@ import Link from 'next/link';
 import {Input} from '@/components/ui/input';
 import {Button} from '@/components/ui/button';
 import {Drawer, DrawerContent, DrawerTrigger} from '@/components/ui/drawer';
-import {Api} from '@/services/api-client';
 import {Search} from 'lucide-react';
 import {useClickAway} from 'react-use';
 import {useQuery} from '@tanstack/react-query';
 import {cn} from '@/lib/utils';
 import {generateSlug} from '@/services/generateSlug';
 import {Spinner} from "@/components/ui/spinner";
+import {ProductWithImage} from "@/types/order";
 
 interface SearchInputProps {
     className?: string;
@@ -27,7 +27,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({ className }) => {
 
     const { data: products = [], isLoading } = useQuery({
         queryKey: ['search', searchQuery],
-        queryFn: () => Api.products.search(searchQuery.trim()),
+        queryFn: () =>
+            fetch(`/api/products/search?query=${encodeURIComponent(searchQuery.trim())}`)
+                .then((res):Promise<ProductWithImage[]> => res.json()),
         enabled: !!searchQuery.trim(),
     });
 

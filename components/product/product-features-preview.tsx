@@ -1,12 +1,33 @@
 // components/product/product-features-preview.tsx
 "use client"
 
-import { Button, Skeleton } from "@/components/ui";
-import { FC } from "react";
-import { ProductPageType } from "@/services/products";
+import {Button, Skeleton} from "@/components/ui";
+import {FC} from "react";
+import {ProductPageType} from "@/services/products";
 
-export const ProductFeaturesPreview: FC<ProductPageType & { isLoading?: boolean }> = ({ features, isLoading }) => {
-    const displayed = features.slice(0, 8);
+type ProductFeaturesPreviewProps = {
+    isLoading?: boolean;
+    features?: ProductPageType["features"];
+};
+
+export const ProductFeaturesPreview: FC<ProductFeaturesPreviewProps> = (props) => {
+    if (props.isLoading) {
+        return (
+            <div className="w-full">
+                <Skeleton className="h-6 w-1/2 mb-5" />
+                <ul className="text-md space-y-3 mb-6 max-[767px]:text-sm">
+                    {Array(8).fill(0).map((_, i) => (
+                        <li key={i}>
+                            <Skeleton className="h-4 w-full" />
+                        </li>
+                    ))}
+                </ul>
+                <Skeleton className="h-4 w-10 mt-6" />
+            </div>
+        );
+    }
+
+    const displayed = props.features?.slice(0, 8) ?? [];
 
     const scrollToFullFeatures = () => {
         const section = document.getElementById("all-features");
@@ -15,21 +36,6 @@ export const ProductFeaturesPreview: FC<ProductPageType & { isLoading?: boolean 
         }
     };
 
-    if (isLoading) {
-        return (
-            <div className="w-full">
-                <Skeleton className="h-6 w-1/2 mb-5" /> {/* Заголовок "Features" */}
-                <ul className="text-md space-y-3 mb-6 max-[767px]:text-sm">
-                    {Array(8).fill(0).map((_, i) => (
-                        <li key={i}>
-                            <Skeleton className="h-4 w-full" /> {/* Одна цельная строка для пары ключ-значение */}
-                        </li>
-                    ))}
-                </ul>
-                <Skeleton className="h-4 w-10 mt-6" /> {/* Кнопка "..." */}
-            </div>
-        );
-    }
 
     return (
         <div className="w-full">
@@ -44,7 +50,7 @@ export const ProductFeaturesPreview: FC<ProductPageType & { isLoading?: boolean 
                     </li>
                 ))}
             </ul>
-            {features.length > 6 && (
+            {props.features && props.features.length > 6 && (
                 <Button
                     variant="link"
                     onClick={scrollToFullFeatures}

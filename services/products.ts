@@ -1,9 +1,14 @@
-import { axiosInstance } from "@/services/axiosInstance";
+import {axiosInstance} from "@/services/axiosInstance";
 import {ProductSearchItem, ProductWithImages} from "@/types/product";
 import {ApiRoutes} from "@/services/constants";
 
 
-import {Attribute, Product, ProductAttribute, ProductImage} from "@prisma/client";
+import {
+    Attribute,
+    Product,
+    ProductAttribute,
+    ProductImage
+} from "@prisma/client";
 import prisma from "@/prisma/prisma-client";
 
 export async function search(query: string): Promise<ProductSearchItem[]> {
@@ -32,8 +37,8 @@ export async function getProductBySlug(slug: string): Promise<ProductPageType | 
 }
 
 export type ProductPageType = Product & {
-    images: ProductImage[],
-    features: (ProductAttribute & {
+    images?: ProductImage[],
+    features?: (ProductAttribute & {
         attribute: Attribute
     })[]
 }

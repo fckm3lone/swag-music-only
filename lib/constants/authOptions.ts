@@ -1,10 +1,29 @@
-import type {AuthOptions} from "next-auth"
+import type {AuthOptions, DefaultSession} from "next-auth"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import prisma from "@/prisma/prisma-client"
 import {compare, hashSync} from "bcrypt"
+import {DefaultJWT} from "next-auth/jwt";
 import {UserRole} from "@prisma/client"
+
+declare module "next-auth" {
+    interface Session {
+        user: {
+            id: string;
+            role: string;
+        } & DefaultSession["user"];
+    }
+}
+
+declare module "next-auth/jwt" {
+    interface JWT extends DefaultJWT {
+        id: string;
+        role: string;
+        fullName?: string;
+    }
+}
+
 
 export const authOptions: AuthOptions = {
     providers: [

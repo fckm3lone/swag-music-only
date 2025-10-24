@@ -1,15 +1,20 @@
-import {Order, OrderItem, Product, ProductImage} from "@prisma/client";
+import {
+    PublicOrder,
+    PublicOrderItem,
+    PublicProduct,
+    PublicProductImage
+} from "@/types/public";
 
-export type OrderWithImage = Order & {
+export type OrderWithImage = PublicOrder & {
     items: OrderItemWithProduct[];
 
 
 }
 
-export type OrderItemWithProduct = OrderItem & {
+export type OrderItemWithProduct = PublicOrderItem & {
     product: ProductWithImage
 }
 
-export type ProductWithImage = Product & {
-    images: ProductImage[]
+export type ProductWithImage = PublicProduct & {
+    images: PublicProductImage[]
 }

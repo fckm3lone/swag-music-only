@@ -13,17 +13,18 @@ import {ProductPageType} from "@/services/products";
 export function ProductImageGallery({
                                         images,
                                         isLoading,
-                                    }: ProductPageType & { isLoading?: boolean }) {
+                                    }: Partial<ProductPageType> & { isLoading?: boolean }) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-
-    const scrollRef = useRef<HTMLDivElement>(null);
     const [lightboxOpen, setLightboxOpen] = useState(false);
 
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+
     const isDesktop = useMedia("(min-width: 600px)", true);
-    const visibleImages = images.slice(currentIndex, currentIndex + 4);
+    const visibleImages = images?.slice(currentIndex, currentIndex + 4) ?? [];
     const canScrollUp = currentIndex > 0;
-    const canScrollDown = currentIndex + 4 < images.length;
+    const canScrollDown = currentIndex + 4 < (images?.length ?? 0);
 
     if (isLoading) {
         return (
@@ -72,16 +73,16 @@ export function ProductImageGallery({
 
                 {/* Desktop → slice(4), Mobile → все */}
                 <div className="flex flex-col gap-5 max-[600px]:flex-row max-[600px]:gap-5">
-                    {(images.length > 0 ? (isDesktop ? visibleImages : images) : []).map(
+                    {(isDesktop ? visibleImages : images ?? []).map(
                         (src, i) => (
                             <div
                                 key={`${src.url}-${i}`}
                                 className={`border rounded-s2 p-2 w-20 h-20 max-[600px]:min-w-20 max-[600px]:h-20 flex justify-center items-center cursor-pointer ${
-                                    images.indexOf(src) === selectedImageIndex
+                                    images?.indexOf(src) === selectedImageIndex
                                         ? "border-gray-200"
                                         : "border-border"
                                 }`}
-                                onClick={() => setSelectedImageIndex(images.indexOf(src))}
+                                onClick={() => setSelectedImageIndex(images?.indexOf(src) ?? 0)}
                             >
                                 <Image
                                     src={src.url}
@@ -125,15 +126,13 @@ export function ProductImageGallery({
                 onClick={() => setLightboxOpen(true)}
             >
                 <Image
-                    src={images[selectedImageIndex].url}
+                    src={images?.[selectedImageIndex]?.url ?? ""}
                     alt="main preview"
                     width={580}
                     height={580}
                     className="object-contain w-full h-full"
                 />
             </div>
-
-
         </div>
     );
 }
