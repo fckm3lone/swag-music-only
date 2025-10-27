@@ -9,33 +9,31 @@ import {useCartService} from "@/hooks/useCartService";
 interface ProductCardProps {
     id: number;
     name: string;
-    price: number; // 👈 число, не Decimal
+    price: number;
     images: { url: string }[];
     slug: string;
 }
 
 
 
-export const ProductCard = ({id, name, price, images, slug }: ProductCardProps) => {
-
+export const ProductCard = ({ id, name, price, images, slug }: ProductCardProps) => {
     const imageUrl = images.length > 0 ? images[0].url : "/placeholder-image.png";
-
-    const {useAddItem} = useCartService()
-
+    const { useAddItem } = useCartService();
     const addItemMutation = useAddItem();
 
     const handleAddToCart = (id: number) => {
-        addItemMutation.mutate({productId: id, quantity: 1})
-
-    }
-
-
+        addItemMutation.mutate({ productId: id, quantity: 1 });
+    };
 
     return (
         <div className="group cursor-pointer">
             <div className="flex flex-col items-start text-left transition-all duration-200 group-hover:scale-110">
                 <Link href={`/product/${slug}`} className="w-full">
-                    <div className="relative bg-card w-[190px] h-[190px] flex items-center justify-center rounded-2xl overflow-hidden mb-2">
+                    <div
+                        className="relative bg-card w-[190px] h-[190px]
+                       max-[425px]:w-[150px] max-[425px]:h-[150px]
+                       flex items-center justify-center rounded-2xl overflow-hidden mb-2"
+                    >
                         <Image
                             src={imageUrl}
                             alt={name}
@@ -43,19 +41,25 @@ export const ProductCard = ({id, name, price, images, slug }: ProductCardProps) 
                             className="object-contain"
                             sizes="190px"
                             loading="lazy"
-
                         />
                     </div>
-                    <p className="text-foreground text-md font-regular mb-1">
+
+                    <p className="text-foreground text-md font-regular mb-1 max-[425px]:text-sm">
                         {price}
-                        <span className="text-secondary-foreground text-lg font-regular mb-1"> $</span>
+                        <span className="text-secondary-foreground text-lg font-regular mb-1 max-[425px]:text-base">
+              $
+            </span>
                     </p>
-                    <h3 className="text-md text-foreground">{name}</h3>
+
+                    <h3 className="text-md text-foreground max-[425px]:text-sm w-[190px]
+                       max-[425px]:w-[150px] truncate">
+                        {name}
+                    </h3>
                 </Link>
 
                 <Button
                     variant="link"
-                    className="text-secondary-foreground w-auto px-0 py-0 text-left text-lg font-regular uppercase mt-2"
+                    className="text-secondary-foreground w-auto px-0 py-0 text-left text-lg font-regular uppercase mt-2 max-[425px]:text-sm"
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();

@@ -15,14 +15,21 @@ interface Props {
 
 export default async function OrderPage () {
     const session = await getUserSession();
+
     if (!session) {
+
+
         return redirect("/?notAuth");
     }
 
+    const user = await prisma.user.findFirst({
+        where: { id: Number(session.id) },
+    });
 
+    if (!user) {
 
-    const user = await prisma.user.findFirst({ where: { id: Number(session.id) } });
-    if (!user) return redirect("/?notAuth");
+        return redirect("/?notAuth");
+    }
   return (
 
     <Container>

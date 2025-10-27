@@ -42,7 +42,7 @@ export default function OrdersList ({className}: Props) {
     <div className={cn("rounded-lg p-7.5 bg-white max-w-full w-full", className)}>
       <p className='mb-10 font-medium text-2xl'>MY ORDERS</p>
 
-      <div className="hidden sm:flex flex-col overflow-y-auto gap-7.5">
+      <div className="flex flex-col overflow-y-auto gap-7.5">
         {orders && orders.map(order => (
             <div
               key={order.id}

@@ -8,7 +8,7 @@ export default function VerificationUserTemplate ({code}: Props) {
   return (
     <div className="">
       <p>Код подтверждения: {code}</p>
-      <p><a href={`http://localhost:3000/api/auth/verify?code=${code}`}>Подтвердить регистрацию</a></p>
+      <p><a href={`http://swag-music-only.vercel.app/api/auth/verify?code=${code}`}>Подтвердить регистрацию</a></p>
     </div>
   );
 };

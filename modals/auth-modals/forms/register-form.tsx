@@ -105,7 +105,7 @@ export default function RegisterForm ({className,onClose}: Props) {
                 form.formState.isSubmitting ?
                     (<Spinner className="h-5 w-5 text-gray-400"/>)
                     :
-                    "Log In"
+                    "Sign Up"
 
               }
             </Button>

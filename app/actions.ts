@@ -2,10 +2,8 @@
 
 import {Prisma} from "@prisma/client";
 import {getUserSession} from "@/lib/get-user-session";
-import {hashSync} from "bcrypt";
+import {hashSync} from "bcryptjs";
 import prisma from "@/prisma/prisma-client";
-import {sendEmail} from "@/lib/send-email";
-import VerificationUserTemplate from "@/components/shared/verification-user";
 import {cookies} from "next/headers";
 
 export async function updateUserInfo (body: Prisma.UserUpdateInput) {
@@ -44,14 +42,13 @@ export async function registerUser (body: Prisma.UserCreateInput) {
                 email: body.email,
             }})
         if (user) {
-            if(user.verified) throw new Error("User not verified")
-
             throw new Error("User already exists")
         }
 const createdUser = await prisma.user.create({
     data: {
         email: body.email,
         fullName: body.fullName,
+        verified: new Date(),
         password: hashSync(body.password, 10),
     }
 })
@@ -70,24 +67,24 @@ if (cartToken) {
   });
 }
 
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        await prisma.verificationCode.create({
-            data: {
-                userId: createdUser.id,
-                code: code,
-                type: "E-MAIL CONFIRMATION"
-            }
-        })
-
-        await sendEmail(
-            createdUser.email,
-            "SWAG MUSIC ONLY / Verify account",
-            VerificationUserTemplate({code})
-        )
-
-        return { success: true };
-
-    } catch (err:any) {
+    //     const code = Math.floor(100000 + Math.random() * 900000).toString();
+    //     await prisma.verificationCode.create({
+    //         data: {
+    //             userId: createdUser.id,
+    //             code: code,
+    //             type: "E-MAIL CONFIRMATION"
+    //         }
+    //     })
+    //
+    //     await sendEmail(
+    //         createdUser.email,
+    //         "SWAG MUSIC ONLY / Verify account",
+    //         VerificationUserTemplate({code})
+    //     )
+    //
+    //     return { success: true };
+    //
+        } catch (err:any) {
         console.error('Error [CREATE_USER]', err);
         return {success: false, message: err.message};
     }
