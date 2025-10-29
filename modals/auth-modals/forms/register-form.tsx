@@ -45,7 +45,7 @@ export default function RegisterForm ({className,onClose}: Props) {
         return toast.error(`${response?.message}`)
       }
 
-      toast.success("Verification letter was send to your E-mail");
+      toast.success("User was successfully registered");
       onClose?.()
     } catch (e) {
       console.error(e)
