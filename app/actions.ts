@@ -66,6 +66,7 @@ if (cartToken) {
     },
   });
 }
+        return { success: true };
 
     //     const code = Math.floor(100000 + Math.random() * 900000).toString();
     //     await prisma.verificationCode.create({
@@ -82,7 +83,7 @@ if (cartToken) {
     //         VerificationUserTemplate({code})
     //     )
     //
-    //     return { success: true };
+ 
     //
         } catch (err:any) {
         console.error('Error [CREATE_USER]', err);
