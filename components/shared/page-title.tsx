@@ -9,11 +9,11 @@ interface PageTitleProps {
 
 export const PageTitle: React.FC<PageTitleProps> = ({ title, className }) => {
     return (
-        <Container className="">
+        
         <div className={cn("text-left my-4", className)}>
             <h2 className="text-lg font-ultra-light tracking-widest text-foreground">{title}</h2>
             <div className="border mx-auto mt-2" />
         </div>
-        </Container>
+       
     );
 };

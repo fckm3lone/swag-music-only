@@ -83,7 +83,7 @@ if (cartToken) {
     //         VerificationUserTemplate({code})
     //     )
     //
- 
+    //     return { success: true };
     //
         } catch (err:any) {
         console.error('Error [CREATE_USER]', err);
